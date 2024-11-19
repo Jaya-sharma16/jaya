@@ -1,0 +1,339 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Train Booking System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #1565c0;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .small-button {
+      width: auto;
+      margin-left: 10px;
+      padding: 5px 15px;
+      background-color: #0d47a1;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      background-color: #1565c0;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #0d47a1;
+    }
+
+    .right-button {
+      width: auto;
+      margin-left: 10px;
+      padding: 10px 15px;
+      background-color: #0d47a1;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+    }
+
+    /* Display Amount Section */
+    .display-amount-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .amount {
+      font-size: 20px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .popup button {
+      background-color: #1565c0;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .popup button:hover {
+      background-color: #0d47a1;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #1565c0;
+      color: white;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Train Booking System</h1>
+  </header>
+
+  <div class="container">
+    <form id="bookingForm" onsubmit="return false;">
+      <!-- Arrival Station -->
+      <div class="form-group">
+        <label for="arrival">Arrival Station:</label>
+        <select id="arrival" required>
+          <option value="" disabled selected>Select Arrival Station</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Kolkata">Kolkata</option>
+          <option value="Bangalore">Bangalore</option>
+        </select>
+      </div>
+
+      <!-- Departure Station -->
+      <div class="form-group">
+        <label for="departure">Departure Station:</label>
+        <select id="departure" required>
+          <option value="" disabled selected>Select Departure Station</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Kolkata">Kolkata</option>
+          <option value="Bangalore">Bangalore</option>
+        </select>
+      </div>
+
+      <!-- Train Name -->
+      <div class="form-group">
+
+
+<label for="trainName">Train Name:</label>
+        <select id="trainName" required>
+          <option value="" disabled selected>Select Train</option>
+          <option value="Rajdhani Express">Rajdhani Express</option>
+          <option value="Duronto Express">Duronto Express</option>
+          <option value="Shatabdi Express">Shatabdi Express</option>
+          <option value="Tejas Express">Tejas Express</option>
+          <option value="Garib Rath">Garib Rath</option>
+        </select>
+      </div>
+
+      <!-- Select Class -->
+      <div class="form-group">
+        <label for="class">Select Class:</label>
+        <select id="class" onchange="updatePrice()">
+          <option value="firstAC" data-price="1000">First AC - ₹1000</option>
+          <option value="secondAC" data-price="800">Second AC - ₹800</option>
+          <option value="sleeper" data-price="500">Sleeper - ₹500</option>
+        </select>
+      </div>
+
+      <!-- Date of Journey -->
+      <div class="form-group">
+        <label for="journeyDate">Date of Journey:</label>
+        <input type="date" id="journeyDate" required>
+      </div>
+
+      <!-- Number of Passengers -->
+      <div class="form-group">
+        <label for="numPassengers">Number of Passengers:</label>
+        <input type="number" id="numPassengers" min="1" max="6" required>
+        <button type="button" class="small-button" onclick="generatePassengerFields()">Enter</button>
+      </div>
+
+      <!-- Passenger Details (Initially Hidden) -->
+      <div id="passengerDetails"></div>
+
+      <!-- Display Amount Section -->
+      <div class="display-amount-container">
+        <div id="totalAmount" class="amount">₹0</div>
+        <button type="button" class="small-button" onclick="displayTotalAmount()">Display Amount</button>
+      </div>
+
+<!-- Payment button added here -->
+<div>
+    <!-- Payment Button before ticket generation -->
+    <a href="payment.html" class="btn" style="display:block; margin-top: 20px; padding: 10px; background-color:#1565c0; color: white; text-align: center; border-radius: 5px; text-decoration: none;">Proceed to Payment</a>
+</div>
+      
+      <!-- Generate Ticket Button -->
+      <button type="button" onclick="generateTicket()" style="display:block; margin-top: 20px; padding: 10px; background-color: #1565c0; color: white; border-radius: 5px; border: none;">Generate Ticket</button>
+    </form>
+  </div>
+
+  <!-- Ticket Popup -->
+  <div class="popup" id="ticketPopup">
+    <h3>Ticket Generated</h3>
+    <p>Your ticket has been successfully booked!</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+
+
+
+
+
+  <!-- Footer with Back Button -->
+  <footer>
+    <a href="index.html">Back to Home</a>
+  </footer>
+
+  <script>
+
+    // Date validation for only today and tomorrow
+    const journeyDateInput = document.getElementById('journeyDate');
+    const dateError = document.getElementById('dateError');
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    journeyDateInput.min = tomorrow.toISOString().split('T')[0];
+
+    journeyDateInput.addEventListener('change', function() {
+      const selectedDate = new Date(journeyDateInput.value);
+      if (selectedDate < today) {
+        dateError.style.display = 'inline';
+        journeyDateInput.setCustomValidity('You cannot select a previous date.');
+      } else {
+        dateError.style.display = 'none';
+        journeyDateInput.setCustomValidity('');
+      }
+    });
+
+
+    // Update the price based on the selected class
+    function updatePrice() {
+      const selectedClass = document.getElementById("class");
+      const price = selectedClass.options[selectedClass.selectedIndex].getAttribute("data-price");
+      const totalAmountElement = document.getElementById("totalAmount");
+      const numPassengers = document.getElementById('numPassengers').value;
+
+      // Update the total amount based on the number of passengers and the selected class
+      const totalAmount = price * numPassengers;
+      totalAmountElement.textContent = "₹" + totalAmount;
+    }
+
+    // Function to display the total amount when the "Display Amount" button is clicked
+    function displayTotalAmount() {
+      const totalAmountElement = document.getElementById("totalAmount");
+      const amount = totalAmountElement.textContent;
+      alert("The total amount is: " + amount);
+    }
+
+    // Generate ticket and show popup
+    function generateTicket() {
+      const form = document.getElementById('bookingForm');
+      const trainName = document.getElementById('trainName').value;
+      const departure = document.getElementById('departure').value;
+      const arrival = document.getElementById('arrival').value;
+      const journeyDate = document.getElementById('journeyDate').value;
+
+      if (trainName && departure && arrival && journeyDate) {
+        // Show success popup
+        document.getElementById('ticketPopup').style.display = 'block';
+      } else {
+        alert('Please fill all the fields before generating the ticket!');
+      }
+    }
+
+    // Close popup
+    function closePopup() {
+      document.getElementById('ticketPopup').style.display = 'none';
+    }
+
+
+// Generate passenger details fields when 'Enter' button is clicked
+function generatePassengerFields() {
+      const numPassengers = document.getElementById('numPassengers').value;
+      const passengerDetailsDiv = document.getElementById('passengerDetails');
+      passengerDetailsDiv.innerHTML = ''; // Clear previous fields
+
+      // Loop through and create the passenger input fields
+      for (let i = 1; i <= numPassengers; i++) {
+        const passengerDiv = document.createElement('div');
+        passengerDiv.classList.add('form-group');
+        
+        // Proper string concatenation for HTML content
+        passengerDiv.innerHTML = 
+          '<label for="name' + i + '">Passenger ' + i + ' Name:</label>' +
+          '<input type="text" id="name' + i + '" placeholder="Enter name" required>' +
+
+          '<label for="age' + i + '">Passenger ' + i + ' Age:</label>' +
+          '<input type="number" id="age' + i + '" min="1" placeholder="Enter age" required>' +
+
+          '<label for="gender' + i + '">Passenger ' + i + ' Gender:</label>' +
+          '<input type="radio" id="gender' + i + '" name="gender' + i + '" value="Male" required> Male' +
+          '<input type="radio" id="gender' + i + '" name="gender' + i + '" value="Female" required> Female';
+
+        passengerDetailsDiv.appendChild(passengerDiv);
+      }
+    }
+
+    
+  </script>
+
+</body>
+</html>

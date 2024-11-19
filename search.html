@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Booking System - Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4 ;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #1565c0;
+        }
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+            background-color: #2c3e50; /* Darker blue */
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1000px;
+            border-radius: 10px;
+        }
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #f39c12; /* Yellowish color for contrast */
+        }
+        .train-selection {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #34495e; /* Darker Blue */
+            border-radius: 8px;
+        }
+        .train-selection select {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            background-color: #16a085;
+            color: white;
+            font-size: 16px;
+        }
+        .train-selection input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            background-color: #16a085;
+            color: white;
+            font-size: 16px;
+        }
+        .price-info {
+            color: #f39c12;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .selection-summary {
+            background-color: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .selection-summary h3 {
+            font-size: 24px;
+            color: #f39c12;
+            margin-bottom: 15px;
+        }
+        .summary-details {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .action-buttons {
+            text-align: center;
+        }
+        .action-buttons a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .action-buttons a:hover {
+            background-color: #3498db;
+        }
+        .back-btn {
+            display: block;
+            margin-top: 30px;
+            padding: 10px;
+            text-align: center;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Train Booking Site</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="search.html">Search Train</a>
+        <a href="feedback.html">Feedback</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h2 class="section-title">Search for Your Train</h2>
+    <p>Plan your journey and book the best trains at affordable prices. Find out the train details, timings, and pricing here.</p>
+    
+    <div class="train-selection">
+
+<label for="fromState">Select Departure State</label>
+        <select id="fromState">
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="Chennai">Chennai</option>
+        </select>
+        
+        <label for="toState">Select Arrival State</label>
+        <select id="toState">
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="Chennai">Chennai</option>
+        </select>
+
+        <label for="trainName">Select Train</label>
+        <select id="trainName">
+            <option value="Train 101">Train 101 (Express)</option>
+            <option value="Train 102">Train 102 (SuperFast)</option>
+            <option value="Train 103">Train 103 (Mail)</option>
+            <option value="Train 104">Train 104 (AC Express)</option>
+            <option value="Train 105">Train 105 (Rajdhani)</option>
+            <option value="Train 106">Train 106 (Shatabdi)</option>
+        </select>
+
+        <label for="class">Select Class</label>
+        <select id="class" onchange="updatePrice()">
+            <option value="firstAC" data-price="1000">First AC - ₹1000</option>
+            <option value="secondAC" data-price="800">Second AC - ₹800</option>
+            <option value="sleeper" data-price="500">Sleeper - ₹500</option>
+        </select>
+
+        <label for="passengerCount">Select Number of Passengers</label>
+        <select id="passengerCount" onchange="updatePrice()">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+    </div>
+
+    <div class="price-info" id="priceInfo">Total Price: ₹0</div>
+
+    <div class="selection-summary" id="selectionSummary" style="display:none;">
+        <h3>Your Selected Train Details:</h3>
+        <div class="summary-details" id="trainDetails"></div>
+        <div class="summary-details" id="classDetails"></div>
+        <div class="summary-details" id="passengerDetails"></div>
+        <div class="summary-details" id="totalPriceDetails"></div>
+
+        <div class="action-buttons">
+            <a href="book.html" id="bookNowBtn">Book Now</a>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </div>
+</div>
+
+<script>
+    function updatePrice() {
+        const selectedClass = document.getElementById("class");
+        const selectedClassPrice = parseInt(selectedClass.options[selectedClass.selectedIndex].getAttribute("data-price"));
+        const selectedPassengers = parseInt(document.getElementById("passengerCount").value);
+        const totalPrice = selectedClassPrice * selectedPassengers;
+        
+        const priceInfo = document.getElementById("priceInfo");
+        priceInfo.textContent = totalPrice;
+
+        // Display the selected details
+        const trainName = document.getElementById("trainName").value;
+        const selectedClassName = selectedClass.options[selectedClass.selectedIndex].text;
+        const passengerCount = document.getElementById("passengerCount").value;
+
+        // Update summary
+        document.getElementById("trainDetails").textContent = trainName;
+        document.getElementById("classDetails").textContent = selectedClassName;
+        document.getElementById("passengerDetails").textContent = passengerCount;
+        document.getElementById("totalPriceDetails").textContent = totalPrice;
+        
+        // Show the selection summary
+        document.getElementById("selectionSummary").style.display = "block";
+    }
+
+// Call updatePrice on page load to show initial price
+    window.onload = updatePrice;
+</script>
+
+</body>
+</html>

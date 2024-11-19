@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #1565c0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .form-container {
+            margin: 20px 0;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .back-btn {
+            background-color: #f44336;
+            margin-top: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Feedback Form</h1>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="btn back-btn">Back to Home</a>
+        
+        <div class="form-container">
+            <h2>We Value Your Feedback</h2>
+            <form id="feedbackForm" onsubmit="return submitFeedback(event)">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+                <label for="comments">Your Feedback:</label>
+                <textarea id="comments" name="comments" rows="5" placeholder="Write your feedback here..." required></textarea>
+
+                <button type="submit" class="btn">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle form submission
+        function submitFeedback(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+            alert("Thank you for your feedback! We value your input.");
+            document.getElementById('feedbackForm').reset(); // Reset the form fields after submission
+        }
+    </script>
+</body>
+</html>
